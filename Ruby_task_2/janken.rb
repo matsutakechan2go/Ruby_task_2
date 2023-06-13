@@ -1,121 +1,94 @@
+
 puts "最初はグー！じゃんけん..."
 puts "1(グー) 2(チョキ) 3(パー) 0(戦わない)"
 
-def janken #じゃんけんメソッドを作成
+def janken 
+
   player_num = gets.chomp.to_i 
-  computer_num = rand(1..3) #cp側は疑似乱数を生成するrandメソッドを使う
-  
+  computer_num = rand(1..3) 
   jankens = ["戦わない","グー","チョキ","パー"]
 
-  puts "ホイ！"
-  
-  if player_num > 3
-    puts "無効な数字です"
-    return true
-  end
-  
-  if player_num == computer_num
-    puts "---------------"
-    puts "あなた：#{jankens[player_num ]}"
-    puts "相手：#{jankens[computer_num]}"
-    puts "---------------"
-    puts "あいこで…"
-    return true 
-
-  elsif player_num == 0
+  if player_num == 0
     puts "---------------"
     puts "あなた：#{jankens[player_num ]}"
     puts "---------------"
     puts "ゲーム終了"
-    return false
+    exit
+  end
+
+  if player_num > 3
+    puts "無効な数字です"
+    return janken
+  end
+
+  puts "ホイ！"
+  puts "---------------"
+  puts "あなた：#{jankens[player_num ]}"
+  puts "相手：#{jankens[computer_num]}"
+  puts "---------------"
+  
+  if player_num == computer_num
+    puts "あいこで…"
+    return janken 
   
   elsif 
     player_num == 1 && computer_num == 2 ||
     player_num == 2 && computer_num == 3 ||
     player_num == 3 && computer_num == 1
-    
-    puts "---------------"
-    puts "あなた：#{jankens[player_num]}"
-    puts "相手：#{jankens[computer_num]}"
-    puts "---------------"
+    @janken_result = "win"
     puts "あなたの勝ち！"  
-    attimuitewin
+    puts "あっち向いて..."
+    puts "1(←) 2(↑) 3(→) 4(↓) 0(戦わない)"
+    attimuite
   
   else 
-    puts "---------------"
-    puts "あなた：#{jankens[player_num]}"
-    puts "相手：#{jankens[computer_num]}"
-    puts "---------------"
+    @janken_result = "lose"
     puts "あなたの負け！"
-    attimuitelose
-
+    puts "あっち向いて..."
+    puts "1(←) 2(↑) 3(→) 4(↓) 0(戦わない)"
+    attimuite
+  
+  end
 end
-end
 
-next_game = true
 
-while next_game 
-  next_game = janken
-end #これによりjankenにtrueが返ってくる限りjankenメソッドは繰り返される
 
-def attimuitewin
 
-  puts "あっち向いて..."
-  puts "1(左) 2(上) 3(右) 4(下) 0(戦わない)"
+def attimuite
 
   player_direction = gets.chomp.to_i
   computer_direction = rand(1..4)
 
-  puts "ホイ！"
+  directions = ["戦わない","←","↑","→","↓",]
 
-  directions = ["戦わない","左","上","右","下",]
-
+  
   if player_direction == 0
     puts "---------------"
     puts "あなた：#{directions[player_direction]}"
     puts "---------------"
     puts "ゲーム終了"
+    exit
   end
-
-  if player_direction == computer_direction 
-    puts "---------------"
-    puts "あなた：#{directions[player_direction]}"
-    puts "相手：#{directions[computer_direction]}"
-    puts "---------------"
-    puts "やったー！あなたの勝ち！"
-
-  else 
-    puts "---------------"
-    puts "あなた：#{directions[player_direction]}"
-    puts "相手：#{directions[computer_direction]}"
-    puts "---------------"
-    
-  end
-
-end
-
-def attimuitelose
-  puts "あっち向いて..."
-  puts "1(左) 2(上) 3(右) 4(下) 0(戦わない)"
-
-  player_direction = gets.chomp.to_i
-  computer_direction = rand(1..4)
 
   puts "ホイ！"
+  puts "---------------"
+  puts "あなた：#{directions[player_direction]}"
+  puts "相手：#{directions[computer_direction]}"
+  puts "---------------"
 
-  directions = ["戦わない","左","上","右","下",]
+  if player_direction == computer_direction && (@janken_result == "win")
+    puts "やったー！あなたの勝ち！"
+    exit
 
-  if computer_direction == player_direction
-    puts "---------------"
-    puts "相手：#{directions[computer_direction]}"
-    puts "あなた：#{directions[player_direction]}"
-    puts "---------------"
+  elsif computer_direction == player_direction && (@janken_result == "lose")
     puts "うーん、あなたの負け！"
+    exit
 
   else
-    puts "---------------"
-    puts "相手：#{directions[computer_direction]}"
-    puts "あなた：#{directions[player_direction]}"
-    puts "---------------"
+    puts "じゃんけん..."
+    return janken
   end
 end
+
+janken
+
